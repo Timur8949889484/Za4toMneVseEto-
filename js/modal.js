@@ -1,5 +1,6 @@
 const modal = document.querySelector(".modal");
 const modalCloseBtn = document.querySelector(".modal_close");
+let modalShownByScroll = false;
 
 const openModal = () => {
   modal.style.display = "block";
@@ -28,20 +29,15 @@ document.addEventListener("keydown", (e) => {
 setTimeout(openModal, 10000);
 
 function showModalByScroll() {
+  if (modalShownByScroll) return;
+
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   const clientHeight = document.documentElement.clientHeight;
-
   const scrollHeight = document.documentElement.scrollHeight;
 
-  const scrolled = scrollTop + clientHeight;
-
-  console.log(
-    `Scrolled: ${scrolled.toFixed(0)}, Total Height: ${scrollHeight}`
-  );
-
-  if (scrolled >= scrollHeight - 1) {
-    console.log("END OF PAGE REACHED - Opening Modal!");
+  if (scrollTop + clientHeight >= scrollHeight - 1) {
     openModal();
+    modalShownByScroll = true;
     window.removeEventListener("scroll", showModalByScroll);
   }
 }
